@@ -16,12 +16,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
     @Provides
     @Singleton
     fun provideGson(): GenerativeModel {
         return GenerativeModel(
-            modelName = "gemini-pro",
-            apiKey = "xxxx"
+            modelName = "gemini-1.5-flash",
+            apiKey = ""
         )
     }
 

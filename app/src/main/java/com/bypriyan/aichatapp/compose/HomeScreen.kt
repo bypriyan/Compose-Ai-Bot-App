@@ -1,5 +1,6 @@
 package com.bypriyan.aichatapp.compose
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import com.bypriyan.aichatapp.R
+import com.bypriyan.aichatapp.model.ModelQuestion
 import com.bypriyan.aichatapp.viewModel.ChatViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,6 +33,9 @@ import com.bypriyan.aichatapp.viewModel.ChatViewModel
 fun homeScreen(chatViewModel: ChatViewModel) {
 
     val messageList by chatViewModel.messageList.collectAsState()
+    var selectedImgUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
 
     Scaffold(
         topBar = {
@@ -62,13 +71,29 @@ fun homeScreen(chatViewModel: ChatViewModel) {
             Column(modifier = Modifier
                 .weight(1f)
                 ) {
-
                 messageList(messageList)
             }
 
-            sendMessage(){message->
-                chatViewModel.sendMessage(message)
+
+            selectedImgUri?.let {
+                loadImage(uri = it, dp = 100.dp, modifier =Modifier ){
+                    selectedImgUri = null
+                    Log.d("clicked", "homeScreen: $selectedImgUri")
+                }
             }
+
+            sendMessage({message->
+               val message = when(selectedImgUri!= null){
+                    true->ModelQuestion(message, selectedImgUri!!)
+                    false->ModelQuestion(message, null)
+               }
+                chatViewModel.sendMessage(message)
+                selectedImgUri = null
+            },{uri->
+                uri?.let {
+                    selectedImgUri = it
+                }
+            })
         }
     }
 

@@ -1,6 +1,11 @@
 package com.bypriyan.aichatapp.compose
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,8 +40,18 @@ import androidx.compose.ui.unit.dp
 import com.bypriyan.aichatapp.R
 
 @Composable
-fun sendMessage(message: (String) -> Unit) {
+fun sendMessage(message: (String) -> Unit, selectedImgUri:(Uri?)->Unit) {
     var text by remember { mutableStateOf("") }
+
+
+
+    val singlePhotoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            selectedImgUri(uri)
+        }
+    )
+
 
     Row(
         modifier = Modifier
@@ -47,15 +62,23 @@ fun sendMessage(message: (String) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_add),
-            contentDescription = null,
-            modifier = Modifier.size(30.dp)
-        )
+        IconButton(onClick = {
+            singlePhotoLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_add),
+                contentDescription = null,
+                modifier = Modifier.size(30.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.width(10.dp))
 
-        SimpleFilledTextFieldSample(text = text, modifier = Modifier.weight(1f).imePadding()) { message ->
+        SimpleFilledTextFieldSample(text = text, modifier = Modifier
+            .weight(1f)
+            .imePadding()) { message ->
             text = message
         }
 

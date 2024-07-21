@@ -33,7 +33,6 @@ fun messageList(messageList:List<ModelMessage>){
             horizontalAlignment = Alignment.CenterHorizontally) {
 
             lottieAnimation(R.raw.hello_lottie)
-
         }
     }else{
         LazyColumn(modifier = Modifier.fillMaxSize(),
@@ -56,7 +55,6 @@ fun messageRow(modelMessage: ModelMessage) {
         Box(
             modifier = Modifier.fillMaxWidth()
         ){
-
             Box(modifier = Modifier
                 .align(
                     if (isBot) Alignment.BottomStart else Alignment.BottomEnd
