@@ -3,6 +3,7 @@ package com.bypriyan.togocartstore.DI.module
 import android.content.Context
 import android.content.SharedPreferences
 import android.location.Geocoder
+import com.google.ai.client.generativeai.GenerativeModel
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -17,8 +18,11 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideGson(): Gson {
-        return Gson()
+    fun provideGson(): GenerativeModel {
+        return GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = "xxxx"
+        )
     }
 
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -41,7 +42,8 @@ fun sendMessage(message: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.white))
-            .padding(15.dp),
+            .imePadding()
+            .padding(start = 15.dp, top = 6.dp, end = 15.dp, bottom = 15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -53,15 +55,17 @@ fun sendMessage(message: (String) -> Unit) {
 
         Spacer(modifier = Modifier.width(10.dp))
 
-        SimpleFilledTextFieldSample(text = text, modifier = Modifier.weight(1f)) { message ->
+        SimpleFilledTextFieldSample(text = text, modifier = Modifier.weight(1f).imePadding()) { message ->
             text = message
         }
 
         Spacer(modifier = Modifier.width(10.dp))
 
         IconButton(onClick = {
-            message(text) // Send the message
-            text = "" // Clear the text field
+            if(text.isNotEmpty()){
+                message(text.trim()) // Send the message
+                text = "" // Clear the text field
+            }
         }) {
             Icon(
                 imageVector = Icons.Default.Send,
