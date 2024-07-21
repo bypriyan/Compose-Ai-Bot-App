@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -70,12 +72,30 @@ fun messageRow(modelMessage: ModelMessage) {
                     shape = RoundedCornerShape(20.dp)
                 )
                 .padding(16.dp)){
-                Text(
-                    text = modelMessage.message,
-                    color = colorResource(id = if(isBot)R.color.black else R.color.white),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.W500
-                )
+
+                if(modelMessage.uri!=null){
+                    Column(horizontalAlignment = Alignment.End) {
+                        loadImage(uri = modelMessage.uri, dp = 150.dp, modifier = Modifier, false) {
+                        }
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = modelMessage.message,
+                            color = colorResource(id = if(isBot)R.color.black else R.color.white),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.W500,
+                            modifier = Modifier.padding(end = 10.dp)
+                        )
+                    }
+                }else{
+                    Text(
+                        text = modelMessage.message,
+                        color = colorResource(id = if(isBot)R.color.black else R.color.white),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.W500
+                    )
+                }
+
+
             }
 
         }

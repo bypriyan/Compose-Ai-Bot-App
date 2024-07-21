@@ -76,7 +76,7 @@ fun homeScreen(chatViewModel: ChatViewModel) {
 
 
             selectedImgUri?.let {
-                loadImage(uri = it, dp = 100.dp, modifier =Modifier ){
+                loadImage(uri = it, dp = 100.dp, modifier =Modifier, true ){
                     selectedImgUri = null
                     Log.d("clicked", "homeScreen: $selectedImgUri")
                 }

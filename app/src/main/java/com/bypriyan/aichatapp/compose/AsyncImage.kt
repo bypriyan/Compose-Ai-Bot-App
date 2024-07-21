@@ -29,9 +29,11 @@ import coil.request.ImageRequest
 import com.bypriyan.aichatapp.R
 
 @Composable
-fun loadImage(uri: Uri, dp: Dp, modifier: Modifier, cancelClicked:()->Unit){
+fun loadImage(uri: Uri, dp: Dp, modifier: Modifier, isCancelable:Boolean, cancelClicked:()->Unit){
 
-    Box(modifier = Modifier.fillMaxWidth()){
+    Box(modifier =
+    Modifier.fillMaxWidth()
+    ){
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -48,23 +50,27 @@ fun loadImage(uri: Uri, dp: Dp, modifier: Modifier, cancelClicked:()->Unit){
                 contentScale = ContentScale.Crop // Adjust scaling as needed
             )
 
-            IconButton(onClick = {
-                cancelClicked()
-            }, modifier = Modifier.align(Alignment.TopEnd)) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    tint = colorResource(id = R.color.white),
-                    modifier = Modifier
-                        .size(20.dp)
-                        .background(
-                            color = colorResource(id = R.color.bg),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .padding(3.dp)
+            if(isCancelable){
+                IconButton(onClick = {
+                    cancelClicked()
+                }, modifier = Modifier.align(Alignment.TopEnd)) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        tint = colorResource(id = R.color.white),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .background(
+                                color = colorResource(id = R.color.bg),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .padding(3.dp)
 
-                )
+                    )
+                }
             }
+
+
 
         }
     }
